@@ -1,14 +1,15 @@
-import { useState } from "react";
-import EditPanel from "./EditPanel";
 import Item from "./Item";
 
 const List = ({ data, setData, handleDelete }) => {
-  return (
+  const temp = (
     <main className="row">
-      {!data.length ? (
-        <h3 className="">Empty list</h3>
-      ) : (
         <>
+          <div className="row mb-2 fw-bold">
+            <div className="col-5">Task</div>
+            <div className="col-2">Deadline</div>
+            <div className="col-1">Done</div>
+            <div className="col-4">Actions</div>
+          </div>
           {data.map((item) => (
             <Item
               item={item}
@@ -20,9 +21,11 @@ const List = ({ data, setData, handleDelete }) => {
             />
           ))}
         </>
-      )}
+      {/* )} */}
     </main>
   );
+
+  return temp;
 };
 
 export default List;

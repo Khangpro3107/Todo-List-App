@@ -5,31 +5,38 @@ const Item = ({ item, handleDelete, data, setData }) => {
   const [showEdit, setShowEdit] = useState(false);
 
   return (
-    <div className="row mb-2 bg-light">
-      <p className="col-7">{item.text}</p>
+    <div className="row mb-2">
+      <p className="col-5">{item.text}</p>
+      <p className="col-2">{item.deadline.slice(0, 10)}</p>
       <div className="col-1">
         <input
           disabled
           type="checkbox"
           id="item-checkbox"
-          className=""
+          className="form-check-input"
           checked={item.completed}
         />
       </div>
       <div className="col-4 d-flex justify-content-between">
         <button
           type="button"
+          className="btn btn-primary"
+        >
+        <i className="fas fa-info-circle"></i> Detail
+        </button>
+        <button
+          type="button"
           className="btn btn-success"
           onClick={() => setShowEdit(!showEdit)}
         >
-          Edit
+          <i className="fas fa-pen"></i> Edit
         </button>
         <button
           type="button"
           className="btn btn-danger"
           onClick={() => handleDelete(item)}
         >
-          Delete
+          <i className="fas fa-trash"></i> Delete
         </button>
       </div>
       {showEdit ? (

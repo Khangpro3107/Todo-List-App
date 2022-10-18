@@ -10,6 +10,10 @@ const TodoSchema = new Schema({
         type: Boolean,
         default: false
     },
+    deadline: {
+        type: Date,
+        default: Date.now()
+    },
     timestamp: {
         type: String,
         default: Date.now()
