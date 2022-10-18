@@ -1,0 +1,23 @@
+GET http://localhost:3001/todos
+
+###
+
+POST http://localhost:3001/todo/new
+Content-Type: application/json
+
+{
+    "text": "testing create new todo 4"    
+}
+
+###
+
+DELETE http://localhost:3001/todo/61f785ec259011925a3776ce
+
+###
+
+PATCH http://localhost:3001/todo/61f785ec259011925a3776ce
+Content-Type: application/json
+
+{
+    "completed": false
+}
