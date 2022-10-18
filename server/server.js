@@ -3,13 +3,14 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Todo = require("./models/Todo");
 const app = express();
+require('dotenv').config()
 
 app.use(express.json());
 app.use(cors());
 
 mongoose
   .connect(
-    "mongodb+srv://khangle:khangle@cluster0.nvsfjle.mongodb.net/?retryWrites=true&w=majority",
+    process.env.MONGO_URL,
     {
       useUnifiedTopology: true,
       useNewUrlParser: true,
