@@ -21,7 +21,6 @@ const List = ({ data, setData, handleDelete }) => {
             />
           ))}
         </>
-      {/* )} */}
     </main>
   );
 

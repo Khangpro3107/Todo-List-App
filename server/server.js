@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const Todo = require("./models/Todo");
 const app = express();
-const morgan = require('morgan')
+const morgan = require("morgan");
 require("dotenv").config();
 
-app.use(morgan('common'));
+app.use(morgan("common"));
 app.use(express.json());
 app.use(cors());
 
@@ -22,6 +22,20 @@ app.get("/todos", async (req, res) => {
   try {
     const todos = await Todo.find();
     return res.status(200).json(todos);
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
+app.get("/todo/:id", async (req, res) => {
+  try {
+    if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+      console.log("id", req.params.id);
+      const item = await Todo.findOne({ _id: req.params?.id });
+      console.log("item", item);
+      if (item) return res.status(200).json(item);
+      else return res.status(404).json(null);
+    } else return res.status(404).json(null);
   } catch (error) {
     console.log(error.message);
   }
@@ -50,9 +64,9 @@ app.patch("/todo/:id", async (req, res) => {
     const todo = await Todo.findByIdAndUpdate(req.params.id, {
       text: req.body.text,
       completed: req.body.completed,
+      deadline: req.body.deadline,
       timestamp: Date.now(),
     });
-    console.log("todo: ", todo)
     return res.status(200).json(todo);
   } catch (error) {
     console.log(error.message);

@@ -1,7 +1,11 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import EditPanel from "./EditPanel";
 
 const Item = ({ item, handleDelete, data, setData }) => {
+
+  const navigate = useNavigate();
+
   const [showEdit, setShowEdit] = useState(false);
 
   return (
@@ -21,6 +25,7 @@ const Item = ({ item, handleDelete, data, setData }) => {
         <button
           type="button"
           className="btn btn-primary"
+          onClick={() => navigate(`/todo/${item._id}`)}
         >
         <i className="fas fa-info-circle"></i> Detail
         </button>

@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const TodoSchema = new Schema({
     text: {
         type: String,
-        required: true
+        required: true,
+        maxLength: 50
     },
     completed: {
         type: Boolean,
@@ -12,11 +13,11 @@ const TodoSchema = new Schema({
     },
     deadline: {
         type: Date,
-        default: Date.now()
+        default: Date.now
     },
     timestamp: {
         type: String,
-        default: Date.now()
+        default: Date.now
     }
 })
 

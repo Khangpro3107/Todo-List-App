@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Header from "./components/Header";
 import List from "./components/List";
 import NewItem from "./components/NewItem";
+import { Routes, Route } from "react-router-dom";
+import ItemDetail from "./components/ItemDetail";
 
 const URL = "http://localhost:3001/";
 
@@ -13,22 +15,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    axios
-      .get(`${URL}todos`)
-      .then((res) => {
-        const newData = res.data.sort((a, b) => {
-          return Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
-        });
-        const finalData = newData.filter((item) => !item.completed);
-        const filteredData = newData.filter((item) => item.completed);
-        setData(finalData.concat(filteredData));
-      })
-      .catch((err) => console.log(err.message));
-    setIsLoading(false);
+    const fetchData = async () => {
+      setIsLoading(true);
+      await axios
+        .get(`${URL}todos`)
+        .then((res) => {
+          const newData = res.data.sort((a, b) => {
+            return Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
+          });
+          const finalData = newData.filter((item) => !item.completed);
+          const filteredData = newData.filter((item) => item.completed);
+          setData(finalData.concat(filteredData));
+        })
+        .catch((err) => console.log(err.message));
+      setIsLoading(false);
+    };
+    fetchData();
   }, [data.length]);
 
-  const handleDelete = (item) => {
+  const handleDelete = async (item) => {
     setIsLoading(true);
     const newList = data.filter((_item) => _item._id !== item._id);
     const sortedList = newList.sort((a, b) => {
@@ -36,14 +41,14 @@ function App() {
     });
     const notCompletedList = sortedList.filter((item) => !item.completed);
     const completedList = sortedList.filter((item) => item.completed);
-    axios
+    await axios
       .delete(`${URL}todo/${item._id}`)
       .then((res) => setData(notCompletedList.concat(completedList)))
       .catch((err) => console.log(err.message));
     setIsLoading(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     setIsLoading(true);
     const newTask = {
       text: newItem,
@@ -55,7 +60,7 @@ function App() {
     });
     const notCompletedList = sortedList.filter((item) => !item.completed);
     const completedList = sortedList.filter((item) => item.completed);
-    axios
+    await axios
       .post(`${URL}todo/new`, newTask)
       .then((res) => {
         setData(notCompletedList.concat(completedList));
@@ -73,14 +78,42 @@ function App() {
           <div className="row mb-3">
             <Header />
           </div>
-          <NewItem
-            newItem={newItem}
-            setNewItem={setNewItem}
-            handleSubmit={handleSubmit}
-            deadline={deadline}
-            setDeadline={setDeadline}
-          />
-          {!isLoading ? (data.length ? <List data={data} setData={setData} handleDelete={handleDelete} /> : <h1>Empty</h1>) : <h1>Loading</h1>}
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <>
+                  <NewItem
+                    newItem={newItem}
+                    setNewItem={setNewItem}
+                    handleSubmit={handleSubmit}
+                    deadline={deadline}
+                    setDeadline={setDeadline}
+                  />
+                  {!isLoading ? (
+                    data.length ? (
+                      <List
+                        data={data}
+                        setData={setData}
+                        handleDelete={handleDelete}
+                      />
+                    ) : (
+                      <h6 className="text-center">
+                        The list is currently empty. Enter some using the form
+                        below.
+                      </h6>
+                    )
+                  ) : (
+                    <h1 className="text-center">
+                      Loading...
+                      <div className="spinner-border text-dark" role="status"></div>
+                    </h1>
+                  )}
+                </>
+              }
+            />
+            <Route path="/todo/:id" element={<ItemDetail />} />
+          </Routes>
         </div>
         <div className="col-1"></div>
       </div>
