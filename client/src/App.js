@@ -1,10 +1,14 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Header from "./components/Header";
 import List from "./components/List";
 import NewItem from "./components/NewItem";
-import { Routes, Route } from "react-router-dom";
 import ItemDetail from "./components/ItemDetail";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Error from "./components/Error";
+import PrivateRoutes from "./components/PrivateRoutes";
 
 const URL = "http://localhost:3001/";
 
@@ -13,6 +17,8 @@ function App() {
   const [newItem, setNewItem] = useState("");
   const [deadline, setDeadline] = useState(Date.now());
   const [isLoading, setIsLoading] = useState(false);
+
+  const user = true;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -79,40 +85,48 @@ function App() {
             <Header />
           </div>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <>
-                  <NewItem
-                    newItem={newItem}
-                    setNewItem={setNewItem}
-                    handleSubmit={handleSubmit}
-                    deadline={deadline}
-                    setDeadline={setDeadline}
-                  />
-                  {!isLoading ? (
-                    data.length ? (
-                      <List
-                        data={data}
-                        setData={setData}
-                        handleDelete={handleDelete}
-                      />
+            <Route element={<PrivateRoutes user={user} />}>
+              <Route
+                path="/"
+                element={
+                  <>
+                    <NewItem
+                      newItem={newItem}
+                      setNewItem={setNewItem}
+                      handleSubmit={handleSubmit}
+                      deadline={deadline}
+                      setDeadline={setDeadline}
+                    />
+                    {!isLoading ? (
+                      data.length ? (
+                        <List
+                          data={data}
+                          setData={setData}
+                          handleDelete={handleDelete}
+                        />
+                      ) : (
+                        <h6 className="text-center mt-3">
+                          The list is currently empty. Enter some using the form
+                          below.
+                        </h6>
+                      )
                     ) : (
-                      <h6 className="text-center">
-                        The list is currently empty. Enter some using the form
-                        below.
-                      </h6>
-                    )
-                  ) : (
-                    <h1 className="text-center">
-                      Loading...
-                      <div className="spinner-border text-dark" role="status"></div>
-                    </h1>
-                  )}
-                </>
-              }
-            />
-            <Route path="/todo/:id" element={<ItemDetail />} />
+                      <h1 className="text-center">
+                        Loading...
+                        <div
+                          className="spinner-border text-dark"
+                          role="status"
+                        ></div>
+                      </h1>
+                    )}
+                  </>
+                }
+              />
+              <Route path="/todo/:id" element={<ItemDetail />} />
+            </Route>
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/*" element={<Error />} />
           </Routes>
         </div>
         <div className="col-1"></div>
