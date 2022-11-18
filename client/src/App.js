@@ -11,7 +11,7 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import ListDisplay from "./components/ListDisplay";
 
 // const URL = process.env.REACT_APP_BACKEND_URL;
-const URL = "https://todolist-api-0i5c.onrender.com/";
+const URL = "https://todolist-api-gwhc.onrender.com/";
 
 function App() {
   const navigate = useNavigate();
