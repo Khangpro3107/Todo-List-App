@@ -1,7 +1,7 @@
 const Header = () => {
   return (
-    <header className="header">
-      <h2 className="header-title">To-do List App</h2>
+    <header className="header mt-2">
+      <h1 className="header-title">To-do List App</h1>
     </header>
   );
 };

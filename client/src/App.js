@@ -1,24 +1,26 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Header from "./components/Header";
-import List from "./components/List";
 import NewItem from "./components/NewItem";
 import ItemDetail from "./components/ItemDetail";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Error from "./components/Error";
 import PrivateRoutes from "./components/PrivateRoutes";
+import ListDisplay from "./components/ListDisplay";
 
-const URL = "http://localhost:3001/";
+const URL = process.env.REACT_APP_BACKEND_URL;
 
 function App() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
-  const [newItem, setNewItem] = useState("");
+  const [name, setName] = useState("");
+  const [desc, setDesc] = useState("");
   const [deadline, setDeadline] = useState(Date.now());
   const [isLoading, setIsLoading] = useState(false);
-
-  const user = true;
+  const [username, setUsername] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,18 +28,29 @@ function App() {
       await axios
         .get(`${URL}todos`)
         .then((res) => {
-          const newData = res.data.sort((a, b) => {
+          const rawData = res.data.filter((item) => {
+            return item.owner === username;
+          });
+          const newData = rawData.sort((a, b) => {
             return Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
           });
           const finalData = newData.filter((item) => !item.completed);
           const filteredData = newData.filter((item) => item.completed);
-          setData(finalData.concat(filteredData));
+          setData(finalData.concat(filteredData)); // no need to take all fields from backend (*)
         })
         .catch((err) => console.log(err.message));
       setIsLoading(false);
     };
+
+    const fetchUser = () => {
+      setIsLoading(true);
+      setUsername(localStorage.getItem("username"));
+      setIsLoading(false);
+    };
+
+    fetchUser();
     fetchData();
-  }, [data.length]);
+  }, [data.length, username]);
 
   const handleDelete = async (item) => {
     setIsLoading(true);
@@ -57,10 +70,12 @@ function App() {
   const handleSubmit = async () => {
     setIsLoading(true);
     const newTask = {
-      text: newItem,
+      name: name,
+      desc: desc,
       deadline: deadline,
+      owner: username,
     };
-    const newList = [...data, newTask];
+    const newList = [...data, newTask]; // (*) data has a lotta fields, unlike newTask with just 3
     const sortedList = newList.sort((a, b) => {
       return Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
     });
@@ -72,65 +87,84 @@ function App() {
         setData(notCompletedList.concat(completedList));
       })
       .catch((err) => console.log(err.message));
-    setNewItem("");
+    setName("");
+    setDesc("");
     setIsLoading(false);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    alert("Logout successful!");
+    navigate("/login");
+    return window.location.reload();
+  };
+
   return (
-    <div className="container vh-100">
-      <div className="row">
-        <div className="col-1"></div>
-        <div className="container col-10 bg-light vh-100">
-          <div className="row mb-3">
-            <Header />
-          </div>
-          <Routes>
-            <Route element={<PrivateRoutes user={user} />}>
-              <Route
-                path="/"
-                element={
-                  <>
+    <div className="container-fluid vh-100 bg-dark m-0 p-0">
+      <div className="col-1"></div>
+      <div className="container col-10 bg-light vh-100">
+        <div className="d-flex justify-content-between mb-3 w-100 m-auto align-items-center">
+          <Header username={username} />
+          {username ? (
+            <div className="d-flex align-items-center">
+              <h6>Hello, {username}</h6>
+              <button
+                className="btn btn-outline-danger ms-3"
+                onClick={() => {
+                  handleLogout();
+                }}
+              >
+                <i className="fas fa-sign-out-alt me-2" />
+                Logout
+              </button>
+            </div>
+          ) : null}
+        </div>
+        <Routes>
+          <Route element={<PrivateRoutes username={username} />}>
+            <Route
+              path="/"
+              element={
+                <>
+                  <div className="d-flex flex-column align-items-center">
                     <NewItem
-                      newItem={newItem}
-                      setNewItem={setNewItem}
+                      name={name}
+                      setName={setName}
+                      desc={desc}
+                      setDesc={setDesc}
                       handleSubmit={handleSubmit}
                       deadline={deadline}
                       setDeadline={setDeadline}
                     />
-                    {!isLoading ? (
-                      data.length ? (
-                        <List
-                          data={data}
-                          setData={setData}
-                          handleDelete={handleDelete}
-                        />
-                      ) : (
-                        <h6 className="text-center mt-3">
-                          The list is currently empty. Enter some using the form
-                          below.
-                        </h6>
-                      )
-                    ) : (
-                      <h1 className="text-center">
-                        Loading...
-                        <div
-                          className="spinner-border text-dark"
-                          role="status"
-                        ></div>
-                      </h1>
-                    )}
-                  </>
-                }
-              />
-              <Route path="/todo/:id" element={<ItemDetail />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/*" element={<Error />} />
-          </Routes>
-        </div>
-        <div className="col-1"></div>
+                    <ListDisplay
+                      isLoading={isLoading}
+                      data={data}
+                      setData={setData}
+                      username={username}
+                      handleDelete={handleDelete}
+                    />
+                  </div>
+                </>
+              }
+            />
+            <Route
+              path="/todo/:id"
+              element={<ItemDetail data={data} setData={setData} />}
+            />
+          </Route>
+          <Route
+            path="/login"
+            element={username ? <Navigate to="/" /> : <Login />}
+          />
+          <Route
+            path="/register"
+            element={username ? <Navigate to="/" /> : <Register />}
+          />
+          <Route path="/*" element={<Error />} />
+        </Routes>
       </div>
+      <div className="col-1"></div>
+      <footer className="bg-secondary text-center text-light h6 p-2">HCMUT, DBS Seminar, semester 221</footer>
     </div>
   );
 }

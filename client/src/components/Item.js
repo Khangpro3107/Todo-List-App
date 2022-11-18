@@ -1,18 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
-import EditPanel from "./EditPanel";
 
-const Item = ({ item, handleDelete, data, setData }) => {
-
+const Item = ({ item, handleDelete }) => {
   const navigate = useNavigate();
-
-  const [showEdit, setShowEdit] = useState(false);
 
   return (
     <div className="row mb-2">
-      <p className="col-5">{item.text}</p>
+      <p className="col-5">{item.name}</p>
       <p className="col-2">{item.deadline.slice(0, 10)}</p>
-      <div className="col-1">
+      <div className="col-2">
         <input
           disabled
           type="checkbox"
@@ -21,20 +17,13 @@ const Item = ({ item, handleDelete, data, setData }) => {
           checked={item.completed}
         />
       </div>
-      <div className="col-4 d-flex justify-content-between">
+      <div className="col-3 d-flex justify-content-between">
         <button
           type="button"
           className="btn btn-primary"
           onClick={() => navigate(`/todo/${item._id}`)}
         >
-        <i className="fas fa-info-circle"></i> Detail
-        </button>
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={() => setShowEdit(!showEdit)}
-        >
-          <i className="fas fa-pen"></i> Edit
+          <i className="fas fa-info-circle"></i> Detail
         </button>
         <button
           type="button"
@@ -44,9 +33,6 @@ const Item = ({ item, handleDelete, data, setData }) => {
           <i className="fas fa-trash"></i> Delete
         </button>
       </div>
-      {showEdit ? (
-        <EditPanel data={data} setData={setData} item={item} />
-      ) : null}
     </div>
   );
 };

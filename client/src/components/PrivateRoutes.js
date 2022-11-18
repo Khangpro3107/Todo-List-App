@@ -1,11 +1,11 @@
 import React from 'react'
 import { Navigate, Outlet } from 'react-router-dom';
 
-const PrivateRoutes = ({ user }) => {
+const PrivateRoutes = ({ username }) => {
   
   return (
     <>
-      {user ? <Outlet  /> : <Navigate to="/login" />}
+      {username ? <Outlet  /> : <Navigate to="/login" />}
     </>
   )
 }
