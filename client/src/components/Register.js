@@ -2,7 +2,8 @@ import React, { useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const URL = process.env.REACT_APP_BACKEND_URL;
+// const URL = process.env.REACT_APP_BACKEND_URL;
+const URL = "https://todolist-api.onrender.com/";
 
 const Register = () => {
   const navigate = useNavigate();

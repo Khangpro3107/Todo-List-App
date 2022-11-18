@@ -3,7 +3,8 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EditPanel from "./EditPanel";
 
-const URL = process.env.REACT_APP_BACKEND_URL;
+//const URL = process.env.REACT_APP_BACKEND_URL;
+const URL = "https://todolist-api.onrender.com/";
 
 const ItemDetail = ({ data, setData }) => {
   const id = useParams().id;
