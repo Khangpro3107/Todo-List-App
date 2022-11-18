@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 // const URL = process.env.REACT_APP_BACKEND_URL;
-const URL = "https://todolist-api.onrender.com/";
+const URL = "https://todolist-api-0i5c.onrender.com/";
 
 const EditPanel = ({ data, setData, item }) => {
   const [name, setName] = useState(item.name);

@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import EditPanel from "./EditPanel";
 
 //const URL = process.env.REACT_APP_BACKEND_URL;
-const URL = "https://todolist-api.onrender.com/";
+const URL = "https://todolist-api-0i5c.onrender.com/";
 
 const ItemDetail = ({ data, setData }) => {
   const id = useParams().id;

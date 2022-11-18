@@ -11,7 +11,7 @@ import PrivateRoutes from "./components/PrivateRoutes";
 import ListDisplay from "./components/ListDisplay";
 
 // const URL = process.env.REACT_APP_BACKEND_URL;
-const URL = "https://todolist-api.onrender.com/";
+const URL = "https://todolist-api-0i5c.onrender.com/";
 
 function App() {
   const navigate = useNavigate();
@@ -165,7 +165,9 @@ function App() {
         </Routes>
       </div>
       <div className="col-1"></div>
-      <footer className="bg-secondary text-center text-light h6 p-2">HCMUT, DBS Seminar, semester 221</footer>
+      <footer className="bg-secondary text-center text-light h6 p-2">
+        HCMUT, DBS Seminar, semester 221
+      </footer>
     </div>
   );
 }
