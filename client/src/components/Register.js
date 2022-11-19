@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -11,6 +11,7 @@ const Register = () => {
   const usernameRef = useRef();
   const passwordRef = useRef();
   const passwordAgainRef = useRef();
+  const [error, setError] = useState(null);
 
   const handleRegister = async () => {
     if (passwordRef.current.value !== passwordAgainRef.current.value) {
@@ -31,7 +32,7 @@ const Register = () => {
       alert("Registration successful. Please login."); // Don't use alert! Use timer countdown instead.
       return navigate("/login");
     } catch (error) {
-      console.log(error.message);
+      setError(error)
     }
   };
 
@@ -97,6 +98,11 @@ const Register = () => {
           <p className="form-text" id="passwordAgainHelp">
             Type your password again.
           </p>
+        </div>
+        <div className="mb-3 align-self-center text-danger">
+          {error ? (<p>
+            Unknown error. Please reload the page and try again.
+          </p>) : null}
         </div>
         <div className="mb-3 align-self-center">
           <p>

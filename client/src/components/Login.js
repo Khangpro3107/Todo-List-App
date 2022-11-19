@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,6 +10,7 @@ const Login = () => {
 
   const usernameRef = useRef();
   const passwordRef = useRef();
+  const [error, setError] = useState(null);
 
   const handleLogin = async () => {
     try {
@@ -18,7 +19,6 @@ const Login = () => {
         password: passwordRef.current.value,
       });
       if (!res.data.result) {
-        console.log("Invalid login!!!!!");
         return alert("Invalid login credentials. Please try again.");
       }
       alert(`Login successful! Welcome, ${usernameRef.current.value}.`);
@@ -26,7 +26,7 @@ const Login = () => {
       navigate("/");
       return window.location.reload();
     } catch (error) {
-      console.log(error);
+      setError(error);
     }
   };
 
@@ -64,6 +64,11 @@ const Login = () => {
             id="passwordInput"
             required
           />
+        </div>
+        <div className="mb-3 align-self-center text-danger">
+          {error ? (<p>
+            Invalid login credentials. Please try again.
+          </p>) : null}
         </div>
         <div className="mb-3 align-self-center">
           <p>

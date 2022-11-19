@@ -19,9 +19,11 @@ const ItemDetail = ({ data, setData }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        await axios.get(`${URL}todo/${id}`).then((res) => {
-          if (res.data) setItem(res.data);
-        });
+        // await axios.get(`${URL}todo/${id}`).then((res) => {
+        //   if (res.data) setItem(res.data);
+        // });
+        const res = await axios.get(`${URL}todo/${id}`);
+        setItem(res.data);
       } catch (error) {
         setError(error);
       }
@@ -35,19 +37,19 @@ const ItemDetail = ({ data, setData }) => {
       {/* <h1>{item.name}, {(new Date(item.deadline)).toString()}, {(new Date(parseInt(item.timestamp))).toString()}</h1> */}
       <div className="container mt-5">
         <h1 className="row">Task name: {item.name}</h1>
-        <h1 className="row">Task description: {item.desc}</h1>
-        <h1 className="row">
+        <h3 className="row">Task description: {item.desc}</h3>
+        <h6 className="row">
           Deadline:{" "}
           {new Date(item.deadline).toLocaleDateString("en", {
             weekday: "long",
           })}
           ,{" "}
           {new Date(item.deadline).toLocaleString("en", { dateStyle: "long" })}
-        </h1>
-        <h1 className="row">
-          Status: {item.completed ? <>Completed</> : <>Not completed</>}
-        </h1>
-        <h1 className="row">
+        </h6>
+        <div className="row">
+          Status: {item.completed ? <h6 className="text-success">Completed<i className="fas fa-check ms-2" /></h6> : <h6 className="text-danger">Not completed<i className="fas fa-times ms-2" /></h6>}
+        </div>
+        <h6 className="row">
           Last edited:{" "}
           {new Date(parseInt(item.timestamp)).toLocaleDateString("en", {
             weekday: "long",
@@ -57,8 +59,8 @@ const ItemDetail = ({ data, setData }) => {
             dateStyle: "long",
           })}
           , {new Date(parseInt(item.timestamp)).toLocaleTimeString()}
-        </h1>
-        <div className="">
+        </h6>
+        <div className="mt-2">
           <button
             type="button"
             className="btn btn-success"
@@ -78,7 +80,6 @@ const ItemDetail = ({ data, setData }) => {
 
   return (
     <>
-      {/* <Link to="/">Back to Homepage</Link> */}
       <button className="btn btn-outline-primary" onClick={() => navigate("/")}>
         Back to Homepage
       </button>
