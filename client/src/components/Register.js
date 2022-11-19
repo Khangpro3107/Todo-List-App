@@ -12,8 +12,10 @@ const Register = () => {
   const passwordRef = useRef();
   const passwordAgainRef = useRef();
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleRegister = async () => {
+    setIsLoading(true);
     if (passwordRef.current.value !== passwordAgainRef.current.value) {
       return alert("Passwords don't match!");
     }
@@ -34,6 +36,7 @@ const Register = () => {
     } catch (error) {
       setError(error)
     }
+    setIsLoading(false);
   };
 
   return (
@@ -110,9 +113,15 @@ const Register = () => {
           </p>
         </div>
         <div className="mb-3 align-self-center">
-          <button type="submit" className="btn btn-primary">
+          {isLoading ? (
+            <button type="submit" className="btn btn-primary">
+              <span class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            </button>
+          ) : (<button type="submit" className="btn btn-primary">
             Register
-          </button>
+          </button>)}
         </div>
       </form>
     </div>

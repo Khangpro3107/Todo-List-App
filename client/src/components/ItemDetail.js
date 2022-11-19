@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EditPanel from "./EditPanel";
 
-//const URL = process.env.REACT_APP_BACKEND_URL;
+// const URL = process.env.REACT_APP_BACKEND_URL;
 const URL = "https://todolist-api-gwhc.onrender.com/";
 
 const ItemDetail = ({ data, setData }) => {
@@ -19,9 +19,6 @@ const ItemDetail = ({ data, setData }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        // await axios.get(`${URL}todo/${id}`).then((res) => {
-        //   if (res.data) setItem(res.data);
-        // });
         const res = await axios.get(`${URL}todo/${id}`);
         setItem(res.data);
       } catch (error) {
@@ -34,32 +31,48 @@ const ItemDetail = ({ data, setData }) => {
 
   const main = (
     <>
-      {/* <h1>{item.name}, {(new Date(item.deadline)).toString()}, {(new Date(parseInt(item.timestamp))).toString()}</h1> */}
-      <div className="container mt-5">
-        <h1 className="row">Task name: {item.name}</h1>
-        <h3 className="row">Task description: {item.desc}</h3>
-        <h6 className="row">
-          Deadline:{" "}
-          {new Date(item.deadline).toLocaleDateString("en", {
-            weekday: "long",
-          })}
-          ,{" "}
-          {new Date(item.deadline).toLocaleString("en", { dateStyle: "long" })}
-        </h6>
-        <div className="row">
-          Status: {item.completed ? <h6 className="text-success">Completed<i className="fas fa-check ms-2" /></h6> : <h6 className="text-danger">Not completed<i className="fas fa-times ms-2" /></h6>}
+      <div className="container mt-5 d-flex justify-content-between">
+        <div className="d-flex flex-column justify-content-between">
+          <h3>To-do name: {item.name?.length > 12 ? item.name?.slice(0, 12) + "..." : item.name}</h3>
+          <h6>To-do description: {item.desc?.length > 30 ? item.desc?.slice(0, 30) + "..." : item.desc}</h6>
         </div>
-        <h6 className="row">
-          Last edited:{" "}
-          {new Date(parseInt(item.timestamp)).toLocaleDateString("en", {
-            weekday: "long",
-          })}
-          ,{" "}
-          {new Date(parseInt(item.timestamp)).toLocaleString("en", {
-            dateStyle: "long",
-          })}
-          , {new Date(parseInt(item.timestamp)).toLocaleTimeString()}
-        </h6>
+        <div className="d-flex flex-column justify-content-between">
+          <h6>
+            Deadline:{" "}
+            {new Date(item.deadline).toLocaleDateString("en", {
+              weekday: "long",
+            })}
+            ,{" "}
+            {new Date(item.deadline).toLocaleString("en", {
+              dateStyle: "long",
+            })}
+          </h6>
+          <div>
+            Status:{" "}
+            {item.completed ? (
+              <span className="text-success">
+                Completed
+                <i className="fas fa-check ms-2" />
+              </span>
+            ) : (
+              <span className="text-danger">
+                Not completed
+                <i className="fas fa-times ms-2" />
+              </span>
+            )}
+          </div>
+          <h6>
+            Last edited:{" "}
+            {new Date(parseInt(item.timestamp)).toLocaleDateString("en", {
+              weekday: "long",
+            })}
+            ,{" "}
+            {new Date(parseInt(item.timestamp)).toLocaleString("en", {
+              dateStyle: "long",
+            })}
+            , {new Date(parseInt(item.timestamp)).toLocaleTimeString()}
+          </h6>
+        </div>
         <div className="mt-2">
           <button
             type="button"
@@ -69,11 +82,11 @@ const ItemDetail = ({ data, setData }) => {
             <i className="fas fa-pen"></i> Edit
           </button>
         </div>
-        <div className="row">
-          {showEdit ? (
-            <EditPanel data={data} setData={setData} item={item} />
-          ) : null}
-        </div>
+      </div>
+      <div className="row">
+        {showEdit ? (
+          <EditPanel data={data} setData={setData} item={item} />
+        ) : null}
       </div>
     </>
   );
@@ -87,7 +100,7 @@ const ItemDetail = ({ data, setData }) => {
         !error ? (
           main
         ) : (
-          <h1>Item not found</h1>
+          <h3 className="text-center mt-3">Item not found. Please try again.</h3>
         )
       ) : (
         <h1 className="text-center">

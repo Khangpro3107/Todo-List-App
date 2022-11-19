@@ -10,9 +10,11 @@ const Login = () => {
 
   const usernameRef = useRef();
   const passwordRef = useRef();
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const handleLogin = async () => {
+    setIsLoading(true);
     try {
       const res = await axios.post(`${URL}login`, {
         username: usernameRef.current.value,
@@ -28,6 +30,7 @@ const Login = () => {
     } catch (error) {
       setError(error);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -66,9 +69,7 @@ const Login = () => {
           />
         </div>
         <div className="mb-3 align-self-center text-danger">
-          {error ? (<p>
-            Invalid login credentials. Please try again.
-          </p>) : null}
+          {error ? <p>Invalid login credentials. Please try again.</p> : null}
         </div>
         <div className="mb-3 align-self-center">
           <p>
@@ -76,9 +77,17 @@ const Login = () => {
           </p>
         </div>
         <div className="mb-3 align-self-center">
-          <button type="submit" className="btn btn-primary">
-            Login
-          </button>
+          {isLoading ? (
+            <button type="submit" className="btn btn-primary">
+              <span class="spinner-border" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </span>
+            </button>
+          ) : (
+            <button type="submit" className="btn btn-primary">
+              Login
+            </button>
+          )}
         </div>
       </form>
     </div>

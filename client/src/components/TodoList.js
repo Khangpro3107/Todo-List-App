@@ -2,8 +2,7 @@ import Item from "./Item";
 
 const TodoList = ({ data, setData, handleDelete }) => {
   return (
-    <main className="row">
-      <>
+    <main className="row w-100">
         <div className="row mb-2 fw-bold">
           <div className="col-5">Task</div>
           <div className="col-2">Deadline</div>
@@ -20,7 +19,6 @@ const TodoList = ({ data, setData, handleDelete }) => {
             className="container"
           />
         ))}
-      </>
     </main>
   );
 };

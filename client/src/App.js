@@ -148,11 +148,11 @@ function App() {
                 </>
               }
             />
-            <Route
-              path="/todo/:id"
-              element={<ItemDetail data={data} setData={setData} />}
-            />
           </Route>
+          <Route
+            path="/todo/:id"
+            element={username ? <ItemDetail data={data} setData={setData} /> : <Login />}
+          />
           <Route
             path="/login"
             element={username ? <Navigate to="/" /> : <Login />}

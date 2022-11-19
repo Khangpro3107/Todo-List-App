@@ -24,7 +24,7 @@ const EditPanel = ({ data, setData, item }) => {
     const filteredList = data.filter((_item) => item._id !== _item._id);
     const newList = [
       ...filteredList,
-      { ...item, completed: completed, name: name, deadline: deadline },
+      { ...item, desc: desc, completed: completed, name: name, deadline: deadline },
     ];
     const sortedList = newList.sort((a, b) => {
       return Date.parse(a.deadline) < Date.parse(b.deadline) ? -1 : 1;
