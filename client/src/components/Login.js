@@ -17,8 +17,10 @@ const Login = () => {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });
-      if (!res.data.result)
+      if (!res.data.result) {
+        console.log("Invalid login!!!!!");
         return alert("Invalid login credentials. Please try again.");
+      }
       alert(`Login successful! Welcome, ${usernameRef.current.value}.`);
       localStorage.setItem("username", usernameRef.current.value);
       navigate("/");
