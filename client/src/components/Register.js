@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// const URL = process.env.REACT_APP_BACKEND_URL;
 const URL = "https://todolist-api-gwhc.onrender.com/";
 
 const Register = () => {

@@ -10,8 +10,7 @@ import Error from "./components/Error";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ListDisplay from "./components/ListDisplay";
 
-// const URL = process.env.REACT_APP_BACKEND_URL;
-const URL = "https://todolist-api-gwhc.onrender.com/";
+const URL = "https://todolist-api-gwhc.onrender.com/";    // change this to your own backend URL
 
 function App() {
   const navigate = useNavigate();

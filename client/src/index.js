@@ -2,10 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 import { BrowserRouter as Router } from "react-router-dom";
-import {disableReactDevTools} from "@fvilers/disable-react-devtools";
+import {disableReactDevTools} from "@fvilers/disable-react-devtools";     // remove this line if running on local computer
 
-// if (process.end.REACT_APP_NODE_ENV === "production")
-disableReactDevTools();
+disableReactDevTools();     // remove this line if running on local computer
 
 ReactDOM.render(
   <React.StrictMode>
