@@ -2,8 +2,6 @@ import React, { useRef, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-const URL = "https://todolist-api-gwhc.onrender.com/";
-
 const Register = () => {
   const navigate = useNavigate();
 
@@ -18,7 +16,7 @@ const Register = () => {
     if (passwordRef.current.value !== passwordAgainRef.current.value) {
       return alert("Passwords don't match!");
     }
-    const res = await axios.post(`${URL}register/find`, {
+    const res = await axios.post(`/register/find`, {
       username: usernameRef.current.value,
     });
     const isUsedUsername = res.data.result;
@@ -26,7 +24,7 @@ const Register = () => {
       return alert("Username has already been used! Try another one.");
     }
     try {
-      await axios.post(`${URL}register`, {
+      await axios.post(`/register`, {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });

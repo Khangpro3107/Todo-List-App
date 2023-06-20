@@ -2,7 +2,6 @@ import React, { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const URL = "https://todolist-api-gwhc.onrender.com/";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +14,7 @@ const Login = () => {
   const handleLogin = async () => {
     setIsLoading(true);
     try {
-      const res = await axios.post(`${URL}login`, {
+      const res = await axios.post(`/login`, {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });

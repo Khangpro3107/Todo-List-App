@@ -1,8 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
 
-const URL = "https://todolist-api-gwhc.onrender.com/";
-
 const EditPanel = ({ data, setData, item }) => {
   const [name, setName] = useState(item.name);
   const [desc, setDesc] = useState(item.desc);
@@ -31,7 +29,7 @@ const EditPanel = ({ data, setData, item }) => {
     const notCompletedList = sortedList.filter((item) => !item.completed);
     const completedList = sortedList.filter((item) => item.completed);
     await axios
-      .patch(`${URL}todo/${item._id}`, {
+      .patch(`/todo/${item._id}`, {
         name: name,
         desc: desc,
         completed: completed,

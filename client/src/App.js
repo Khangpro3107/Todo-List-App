@@ -10,8 +10,6 @@ import Error from "./components/Error";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ListDisplay from "./components/ListDisplay";
 
-const URL = "https://todolistapi-srgt.onrender.com/";    // change this to your own backend URL
-
 function App() {
   const navigate = useNavigate();
 
@@ -26,7 +24,7 @@ function App() {
     const fetchData = async () => {
       setIsLoading(true);
       await axios
-        .get(`${URL}todos`)
+        .get(`/todos`)
         .then((res) => {
           const rawData = res.data.filter((item) => {
             return item.owner === username;
@@ -61,7 +59,7 @@ function App() {
     const notCompletedList = sortedList.filter((item) => !item.completed);
     const completedList = sortedList.filter((item) => item.completed);
     await axios
-      .delete(`${URL}todo/${item._id}`)
+      .delete(`/todo/${item._id}`)
       .then((res) => setData(notCompletedList.concat(completedList)))
       .catch((err) => console.log(err.message));
     setIsLoading(false);
@@ -82,7 +80,7 @@ function App() {
     const notCompletedList = sortedList.filter((item) => !item.completed);
     const completedList = sortedList.filter((item) => item.completed);
     await axios
-      .post(`${URL}todo/new`, newTask)
+      .post(`/todo/new`, newTask)
       .then((res) => {
         setData(notCompletedList.concat(completedList));
       })

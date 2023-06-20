@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import EditPanel from "./EditPanel";
 
-const URL = "https://todolist-api-gwhc.onrender.com/";
 
 const ItemDetail = ({ data, setData }) => {
   const id = useParams().id;
@@ -18,7 +17,7 @@ const ItemDetail = ({ data, setData }) => {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`${URL}todo/${id}`);
+        const res = await axios.get(`/todo/${id}`);
         setItem(res.data);
       } catch (error) {
         setError(error);
