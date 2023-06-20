@@ -10,7 +10,7 @@ import Error from "./components/Error";
 import PrivateRoutes from "./components/PrivateRoutes";
 import ListDisplay from "./components/ListDisplay";
 
-const URL = "https://todolist-api-gwhc.onrender.com/";    // change this to your own backend URL
+const URL = "https://todolistapi-srgt.onrender.com/";    // change this to your own backend URL
 
 function App() {
   const navigate = useNavigate();
