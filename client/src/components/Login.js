@@ -18,6 +18,7 @@ const Login = () => {
         username: usernameRef.current.value,
         password: passwordRef.current.value,
       });
+      console.log(res)
       if (!res.data.result) {
         return alert("Invalid login credentials. Please try again.");
       }
